@@ -2,6 +2,7 @@ function main() {
     let argument = process.argv[2];
     let fn = null;
     const method = process.argv[3];
+    
     switch (method) {
         case "--sum":
             fn = sum;
@@ -12,21 +13,21 @@ function main() {
         case "--max":
             fn = max;
             break;
-        case "--binary":
-            function generator(arr) {
+        case "--binary-manual":
+            function fnBinary(arr) {
                 const needle = arr[0];
                 arr = arr.slice(1);
                 return binary(arr, needle);
             }
-            fn = generator;
+            fn = fnBinary;
             break;
-        case "--binaryr":
-            function generator(arr) {
+        case "--binary":
+            function fnBinaryR(arr) {
                 const needle = arr[0];
                 arr = arr.slice(1);
                 return binaryRecursive(arr, needle, 0, arr.length - 1);
             }
-            fn = generator;
+            fn = fnBinaryR;
             break;
         default:
             fn = function () {
@@ -59,7 +60,7 @@ function sum(arr) {
  * Recursive COUNT function
  */
 function count(arr) {
-    if (!arr[0]) {
+    if (!arr[0] && arr[0] !== 0) {
         return 0;
     }
     return 1 + count(arr.slice(1));
@@ -69,10 +70,10 @@ function count(arr) {
  * Recursive MAX function
  */
 function max(arr, high = 0) {
-    if (!arr[0]) {
+    if (!arr[0] && arr[0] !== 0) {
         return high;
     }
-    return max(arr.slice(1), arr[0] > high ? arr[0] : high);
+    return max(arr.slice(1), arr[0] >= high ? arr[0] : high);
 }
 
 /**
@@ -103,7 +104,6 @@ function binary(arr, needle) {
 function binaryRecursive(arr, needle, low, high) {
     let mid = Math.floor((low + high) / 2);
     let guess = arr[mid];
-    console.log(guess, '===', needle);
     if (low <= high) {
         if (guess === needle) {
             return mid;
